@@ -1,0 +1,31 @@
+﻿@using System.Globalization
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PersonalProject</title>
+    <link rel="stylesheet" href="~/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/App.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;300;400&display=swap"/>
+</head>
+<body>
+
+<nav class="navbar navbar-dark navbar-expand-lg fixed-top">
+    <ul class="navbar-nav">
+        <li class="nav-item font-weight-bold h2 mt-2">
+            <a asp-controller="Home" asp-action="Index" class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "nav-link active" : "nav-link")">
+                SHARETRADE.com
+            </a>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid p-0 h-100">
+    @RenderBody()
+</div>
+
+<script src="~/jquery/dist/jquery.min.js"></script>
+<script src="~/bootstrap/dist/js/bootstrap.bundle.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
