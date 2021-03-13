@@ -1,5 +1,3 @@
-using System;
-
 namespace Sharetrade.Models
 {
     public class ErrorViewModel
