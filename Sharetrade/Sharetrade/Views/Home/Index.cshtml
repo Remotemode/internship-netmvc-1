@@ -1,8 +1,19 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var articles = ViewData["Articles"] as List<KeyValuePair<string, Article>>;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="overlay">
+    <div class="card-group p-4 mx-3 justify-content-center">
+        @for (var i = 0; i < articles.Count; i++)
+        {
+            @*<a class="card mb-5 mx-3 mt-4" asp-controller="Home" asp-action="SingleArticle">*@
+            <a class="card mb-5 mx-3 mt-4" href=@Url.Action("SingleArticle", "Home", new { id = articles[i].Key }, null)>
+                <img class="card-img-top" src=@articles[i].Value.ImageUrl alt=@articles[i].Value.Title />
+                <span class="card-body">
+                    <h5 class="card-title font-weight-bold text-center">@articles[i].Value.Title</h5>
+                </span>
+            </a>
+        }
+    </div>
 </div>

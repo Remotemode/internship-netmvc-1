@@ -1,30 +1,56 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Sharetrade.Models;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Sharetrade.Models;
+using Sharetrade.Mocks;
 
 namespace Sharetrade.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        /// <summary>
+        /// Database Mock.
+        /// </summary>
+        private readonly List<KeyValuePair<string, Article>> _articles;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
+            // Initialize Database Mock.
+            _articles = new ArticleMocks().GetArticleMocks();
         }
 
+        /// <summary>
+        /// This is default HomeController`s method.
+        /// Route - /home .
+        /// </summary>
+        /// <returns>
+        /// Returns HomePage.
+        /// </returns>
         public IActionResult Index()
         {
+            // Add item to ViewData.
+            ViewData["Articles"] = _articles;
+
+            // Returns HomePage.
             return View();
         }
-
-        public IActionResult Privacy()
+        /// <summary>
+        /// Method returns specify Articles page.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// Returns single Articles view.
+        /// </returns>
+        public IActionResult SingleArticle(string id)
         {
+            // Get specify Article.
+            var specifyArticle = _articles.FirstOrDefault(item => item.Key == id);
+
+            // Add item to ViewData.
+            ViewData["Article"] = specifyArticle.Value;
+
+            // Returns SingleArticle View.
             return View();
         }
 
