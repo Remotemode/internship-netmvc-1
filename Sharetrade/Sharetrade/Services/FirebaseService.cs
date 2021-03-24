@@ -48,8 +48,8 @@ namespace Sharetrade.Services
             //Retrieve data from Firebase.
             var dbArticles = await firebaseClient.Child("Articles").OnceAsync<Article>();
 
-            // Returns result.
-            return dbArticles.ToList();
+            // Returns result. Learn more about LINQ https://docs.microsoft.com/en-us/dotnet/csharp/linq/
+            return dbArticles.Where(item => item.Object.IsValid()).ToList();
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace Sharetrade.Services
             var dbArticles = await GetAllArticles();
 
             // Try to fined Article with specify id.
-            var specifyArticle = dbArticles?.FirstOrDefault(i => i.Key == id)?.Object;
+            var specifyArticle = dbArticles?.FirstOrDefault(i => i.Key == id && i.Object.IsValid())?.Object;
 
             // Returns result.
             return specifyArticle;

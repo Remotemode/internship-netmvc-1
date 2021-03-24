@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using static System.String;
 
 namespace Sharetrade.Models
 {
@@ -47,6 +48,14 @@ namespace Sharetrade.Models
                 hashCode = (hashCode * 375) ^ (ExpertComment != null ? ExpertComment.GetHashCode() : 0);
                 return hashCode;
             }
+        }
+
+        public bool IsValid()
+        {
+            if (IsNullOrEmpty(this.Title)) return false;
+            if (IsNullOrEmpty(this.ImageUrl)) return false;
+            if (IsNullOrEmpty(this.Description)) return false;
+            return !IsNullOrEmpty(this.ExpertComment);
         }
     }
 }
