@@ -1,23 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Sharetrade.Interfaces;
 using Sharetrade.Models;
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using System.Linq;
-using Sharetrade.Mocks;
+using System.Threading.Tasks;
 
 namespace Sharetrade.Controllers
 {
     public class HomeController : Controller
     {
         /// <summary>
-        /// Database Mock.
+        /// IFirebaseService object.
         /// </summary>
-        private readonly List<KeyValuePair<string, Article>> _articles;
+        private readonly IFirebaseService _firebaseService;
 
-        public HomeController()
+        /// <summary> 
+        /// Initialize repositories for HomeController.
+        /// For more information about Dependency injection https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-5.0 .
+        /// </summary>
+        /// <param name="firebaseService">
+        /// Should be added in advance to Startup.ConfigureServices.
+        /// </param>
+        public HomeController(IFirebaseService firebaseService)
         {
-            // Initialize Database Mock.
-            _articles = new ArticleMocks().GetArticleMocks();
+            _firebaseService = firebaseService ?? throw new ArgumentNullException(nameof(firebaseService));
         }
 
         /// <summary>
@@ -27,10 +34,13 @@ namespace Sharetrade.Controllers
         /// <returns>
         /// Returns HomePage.
         /// </returns>
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            // Get all Articles.
+            var dbArticles = await _firebaseService.GetAllArticles();
+
             // Add item to ViewData.
-            ViewData["Articles"] = _articles;
+            ViewData["Articles"] = dbArticles;
 
             // Returns HomePage.
             return View();
@@ -42,13 +52,13 @@ namespace Sharetrade.Controllers
         /// <returns>
         /// Returns single Articles view.
         /// </returns>
-        public IActionResult SingleArticle(string id)
+        public async Task<IActionResult> SingleArticle(string id)
         {
             // Get specify Article.
-            var specifyArticle = _articles.FirstOrDefault(item => item.Key == id);
+            var specifyArticle = await _firebaseService.GetSpecifyArticle(id);
 
             // Add item to ViewData.
-            ViewData["Article"] = specifyArticle.Value;
+            ViewData["Article"] = specifyArticle;
 
             // Returns SingleArticle View.
             return View();

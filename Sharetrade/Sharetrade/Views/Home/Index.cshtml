@@ -1,6 +1,7 @@
-﻿@{
+﻿@using Firebase.Database
+@{
     ViewData["Title"] = "Home Page";
-    var articles = ViewData["Articles"] as List<KeyValuePair<string, Article>>;
+    var articles = ViewData["Articles"] as List<FirebaseObject<Article>>;
 }
 
 <div class="overlay">
@@ -9,9 +10,9 @@
         {
             @*<a class="card mb-5 mx-3 mt-4" asp-controller="Home" asp-action="SingleArticle">*@
             <a class="card mb-5 mx-3 mt-4" href=@Url.Action("SingleArticle", "Home", new { id = articles[i].Key }, null)>
-                <img class="card-img-top" src=@articles[i].Value.ImageUrl alt=@articles[i].Value.Title />
+                <img class="card-img-top" src=@articles[i]?.Object.ImageUrl alt=@articles[i]?.Object.Title />
                 <span class="card-body">
-                    <h5 class="card-title font-weight-bold text-center">@articles[i].Value.Title</h5>
+                    <h5 class="card-title font-weight-bold text-center">@articles[i]?.Object.Title</h5>
                 </span>
             </a>
         }
