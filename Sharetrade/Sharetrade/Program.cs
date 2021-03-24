@@ -20,6 +20,7 @@ namespace Sharetrade
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseConfiguration(config)
                 .UseIISIntegration()
+                .UseUrls("http://*:" + Environment.GetEnvironmentVariable("PORT"))
                 .UseStartup<Startup>()
                 .Build();
 
